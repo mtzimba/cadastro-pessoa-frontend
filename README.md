@@ -1,6 +1,6 @@
 # Aplicação de Cadastro de Pessoas
 
-Este é o frontend de uma aplicação para realizar operações de cadastro de pessoas.
+Este é o frontend de uma aplicação para realizar operações de cadastro de pessoas utilizada durante a mentoria de inclusão.
 
 ## Funcionalidades
 
