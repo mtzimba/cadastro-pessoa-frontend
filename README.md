@@ -59,7 +59,7 @@ Para executar a aplicação utilizando o Docker, siga os passos abaixo:
 5. Após a criação da imagem, execute o seguinte comando para iniciar o contêiner Docker:
 
    ```
-   docker run -p 80:80 nome-da-imagem
+   docker run -p 80:3001 nome-da-imagem
    ```
 
    Substitua `nome-da-imagem` pelo nome da imagem Docker que você definiu anteriormente.
