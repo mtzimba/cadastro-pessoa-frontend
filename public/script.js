@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${moment(pessoa.dataNascimento).format('DD/MM/YYYY')}</td>
         <td>
           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal-${pessoa.id}">Editar</button>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-id=${pessoa.id} data-bs-target="#excluirModal-${pessoa.id}">Excluir</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-id=${pessoa.id}">Excluir</button>
         </td>
       `;
       listaPessoas.appendChild(row);
@@ -69,21 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         const errorData = await response.json();
         const errorMessage = errorData.message || "Erro ao excluir o registro.";
-        exibirErro(errorMessage);
-        $("#excluirModal").modal("hide");
+        alert("errorMessage");
       }
     } catch (error) {
       console.error("Erro ao excluir pessoa:", error);
     }
   }
-
-  // Função para exibir o erro
-  function exibirErro(mensagem) {
-    const erroModalBody = document.getElementById("erroModalBody");
-    erroModalBody.textContent = mensagem;
-    $("#erroModal").modal("show");
-  }
-
   // Event listener para o formulário de cadastro
   formPessoa.addEventListener('submit', async event => {
     event.preventDefault();
