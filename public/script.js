@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${moment(pessoa.dataNascimento).format('DD/MM/YYYY')}</td>
         <td>
           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal-${pessoa.id}">Editar</button>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-id=${pessoa.id}">Excluir</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-id=${pessoa.id}>Excluir</button>
         </td>
       `;
       listaPessoas.appendChild(row);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         const errorData = await response.json();
         const errorMessage = errorData.message || "Erro ao excluir o registro.";
-        alert("errorMessage");
+        alert(errorMessage);
       }
     } catch (error) {
       console.error("Erro ao excluir pessoa:", error);
