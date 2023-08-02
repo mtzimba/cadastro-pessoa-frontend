@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${moment(pessoa.dataNascimento).format('DD/MM/YYYY')}</td>
         <td>
           <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal-${pessoa.id}">Editar</button>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#excluirModal-${pessoa.id}">Excluir</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-id=${pessoa.id}>Excluir</button>
         </td>
       `;
       listaPessoas.appendChild(row);
@@ -56,6 +56,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Função para excluir uma pessoa na API
+  async function excluirPessoa(pessoaId) {
+    try {
+      const response = await fetch(`${apiUrl}/api/pessoas/${pessoaId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        buscarPessoas();
+        alert("Pessoa excluída com sucesso!");
+      } else {
+        const errorData = await response.json();
+        const errorMessage = errorData.message || "Erro ao excluir o registro.";
+        alert(errorMessage);
+      }
+    } catch (error) {
+      console.error("Erro ao excluir pessoa:", error);
+    }
+  }
   // Event listener para o formulário de cadastro
   formPessoa.addEventListener('submit', async event => {
     event.preventDefault();
@@ -69,6 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
     formPessoa.reset();
   });
 
+  // Event listener para os botões de excluir
+  listaPessoas.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("btn-danger")) {
+      const pessoaId = event.target.dataset.id;
+      const confirmExcluir = confirm("Deseja Excluir?");
+      
+      if (confirmExcluir) {
+        await excluirPessoa(pessoaId);
+      }
+    }
+  });
+  
   // Chama a função buscarPessoas ao carregar a página para exibir as pessoas cadastradas
   buscarPessoas();
 });
+
