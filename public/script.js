@@ -75,18 +75,56 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("Erro ao excluir pessoa:", error);
     }
   }
+
+  function preencherFormulario(pessoa) {
+    const nomeInput = document.getElementById('nome');
+    const dataNascimentoInput = document.getElementById('dataNascimento');
+
+    nomeInput.value = pessoa.nome;
+    dataNascimentoInput.value = moment(pessoa.dataNascimento).format('YYYY-MM-DD');
+  }
+
+  async function atualizarPessoa(pessoaId, pessoa) {
+    try {
+      const response = await fetch(`${apiUrl}/api/pessoas/${pessoaId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pessoa)
+      });
+      if (response.ok) {
+        buscarPessoas();
+        alert("Pessoa atualizada com sucesso!");
+      } else {
+        console.error('Erro ao atualizar pessoa:', response.status);
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar pessoa:', error);
+    }
+  }
+
   // Event listener para o formulário de cadastro
   formPessoa.addEventListener('submit', async event => {
     event.preventDefault();
-
+  
     const nome = document.getElementById('nome').value;
     const dataNascimento = document.getElementById('dataNascimento').value;
-
+  
     const pessoa = { nome, dataNascimento };
-    cadastrarPessoa(pessoa);
-
+  
+    if (formPessoa.dataset.editId) {
+      // Se tiver um ID no atributo "data-edit-id", é uma operação de atualização
+      await atualizarPessoa(formPessoa.dataset.editId, pessoa);
+    } else {
+      // Caso contrário, é uma operação de cadastro
+      cadastrarPessoa(pessoa);
+    }
+  
     formPessoa.reset();
+    delete formPessoa.dataset.editId; // Limpa o atributo "data-edit-id" após a operação
   });
+  
 
   // Event listener para os botões de excluir
   listaPessoas.addEventListener("click", async (event) => {
@@ -96,6 +134,20 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (confirmExcluir) {
         await excluirPessoa(pessoaId);
+      }
+    }
+  });
+
+  listaPessoas.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("btn-primary")) {
+      const pessoaId = event.target.dataset.bsTarget.split('-')[1];
+      try {
+        const response = await fetch(`${apiUrl}/api/pessoas/${pessoaId}`);
+        const pessoa = await response.json();
+        preencherFormulario(pessoa);
+        formPessoa.dataset.editId = pessoaId; 
+      } catch (error) {
+        console.error("Erro ao buscar pessoa para edição:", error);
       }
     }
   });
