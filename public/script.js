@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${pessoa.nome}</td>
         <td>${moment(pessoa.dataNascimento).format('DD/MM/YYYY')}</td>
         <td>
-          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editarModal-${pessoa.id}">Editar</button>
+          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-id=${pessoa.id}>Editar</button>
           <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-id=${pessoa.id}>Excluir</button>
         </td>
       `;
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   listaPessoas.addEventListener("click", async (event) => {
     if (event.target.classList.contains("btn-primary")) {
-      const pessoaId = event.target.dataset.bsTarget.split('-')[1];
+      const pessoaId = event.target.dataset.id;
       try {
         const response = await fetch(`${apiUrl}/api/pessoas/${pessoaId}`);
         const pessoa = await response.json();
